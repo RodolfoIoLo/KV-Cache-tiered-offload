@@ -1,4 +1,4 @@
-# KV Cache Learning Lab
+# KV Cache tiered offload lab
 
 围绕 KV Cache 分层卸载、缓存复用与数据传输，整理原理解析、阅读资料、个人笔记和代码实践。
 
@@ -24,10 +24,11 @@
 
 | 编号 | 笔记 |
 |---|---|
-| 00 | [再读 Transformer](notes/00-再读Transformer.md) |
-| 01 | [了解 KV Cache](notes/01-了解KV-Cache.md) |
-| 02 | [认识 vLLM](notes/02-认识vLLM.md) |
-| 03 | [认识 Mooncake](notes/03-认识Mooncake.md) |
+| 00 | [认识项目](notes/00-认识项目.md) |
+| 01 | [再读 Transformer](notes/01-再读Transformer.md) |
+| 02 | [了解 KV Cache](notes/02-了解KV-Cache.md) |
+| 03 | [认识 vLLM](notes/03-认识vLLM.md) |
+| 04 | [认识 Mooncake](notes/04-认识Mooncake.md) |
 
 笔记入口可能尚无内容；目录和文件名本身不表示学习或代码验证已经完成。理论示例、代码运行结果与服务器实测应分别标明。
 
