@@ -1,0 +1,25 @@
+# Local/private material and large artifacts
+/private/
+/AGENTS.md
+/.local/
+.venv/
+venv/
+.env
+.env.*
+!.env.example
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+node_modules/
+*.log
+*.safetensors
+*.pt
+*.pth
+*.ckpt
+*.bin
+*.pdf
+*.pem
+*.key
+.DS_Store
+Thumbs.db
