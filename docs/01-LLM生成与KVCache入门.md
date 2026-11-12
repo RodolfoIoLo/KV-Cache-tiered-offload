@@ -49,9 +49,9 @@ v = x Wv     按匹配权重参与汇总的 Value
 
 Query 与允许访问位置的 Key 计算匹配分数，经过缩放和 softmax 转换成权重，再对 Value 加权求和：
 
-\[
+$$
 O = \operatorname{softmax}(QK^\top/\sqrt d + M)V.
-\]
+$$
 
 `M` 是 mask，用来屏蔽不允许访问的位置。Q/K/V 都是数值向量；这里的 Key 不是普通数据库中的字符串键，Value 也不是原始文本。[Transformer 原论文](https://arxiv.org/abs/1706.03762)
 

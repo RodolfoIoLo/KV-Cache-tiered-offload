@@ -10,9 +10,9 @@
 
 softmax 将分数转换为非负且总和为 1 的权重：
 
-\[
+$$
 \operatorname{softmax}(z)_i = \frac{\exp(z_i)}{\sum_j \exp(z_j)}.
-\]
+$$
 
 实现时先减去最大分数以降低指数溢出的风险；这不改变数学结果。最终输出是 Value 的加权和。它不是“查找一个最相似的 token”，而通常是对所有允许位置做连续加权。
 
@@ -24,9 +24,9 @@ Tokenizer 把字符串变成整数 token ID。一个汉字不必等于一个 tok
 
 语言模型根据此前 token 的条件分布选出下一个 token：
 
-\[
+$$
 p(x_1,\ldots,x_n) = \prod_{t=1}^{n}p(x_t\mid x_{<t}).
-\]
+$$
 
 “选出”可以是贪心 argmax，也可以是采样。生成出的 token 又成为下一步输入，因此普通自回归的各生成步骤有顺序依赖。一次 forward 通常输出 next-token logits；prefill 的最后一个位置可以用于选择首个生成 token，不需要额外执行一次完整 prompt forward。
 
@@ -46,20 +46,20 @@ p(x_1,\ldots,x_n) = \prod_{t=1}^{n}p(x_t\mid x_{<t}).
 
 先忽略 batch 与多头。对长度 `T`、隐藏维度 `D` 的输入 `X`：
 
-\[
+$$
 Q=XW_Q,\quad K=XW_K,\quad V=XW_V,
-\]
-\[
+$$
+$$
 O=\operatorname{softmax}(QK^\top/\sqrt{d}+M)V.
-\]
+$$
 
 `M` 是因果 mask：位置 `t` 只能看到 `j≤t` 的位置，未来位置的分数被屏蔽。`QKᵀ` 可以形成 `T×T` 的分数矩阵，但实际高效内核不一定把整个矩阵写回显存。
 
 在 decode 的新位置 `t`，只需生成当前的 `q_t,k_t,v_t`，然后：
 
-\[
+$$
 o_t=\operatorname{softmax}\left(q_t[K_1;\ldots;K_t]^\top/\sqrt d\right)[V_1;\ldots;V_t].
-\]
+$$
 
 历史 K/V 被复用，新的 K/V 被追加。每层都有自己的投影和隐藏状态，因此不能只缓存第一层的 K/V，也不能只缓存最终层输出。
 
@@ -118,11 +118,11 @@ Chunked prefill 把长 prompt 拆成调度片段，让长 prefill 和 decode 更
 
 设层数为 `L`，KV head 数为 `H_kv`，每个 head 维度为 `d_h`，每元素字节数为 `s`，请求 `i` 的已缓存长度为 `T_i`。对常规各层相同、全历史 dense attention：
 
-\[
+$$
 S_{token}=2LH_{kv}d_hs,
 \qquad
 M_{logical}=S_{token}\sum_iT_i.
-\]
+$$
 
 `2` 代表 K 和 V。长度相同且没有共享时，`sum T_i=B×T`。若 K/V 精度不同，则把 `2s` 换成 `s_K+s_V`。量化的 scale、zero point、对齐和 metadata 还需额外计入。
 
@@ -150,9 +150,9 @@ M_{logical}=S_{token}\sum_iT_i.
 
 若 block 包含 `q` 个 token，无共享时：
 
-\[
+$$
 M_{blocks}=S_{token}\sum_iq\lceil T_i/q\rceil.
-\]
+$$
 
 尾块可能未填满；共享前缀时应数**独立物理块**，不能把每个请求的逻辑长度简单相加。还有块表、索引、hash、引用计数、allocator 与 staging buffers。
 
@@ -208,9 +208,9 @@ Radix tree 用共享前缀组织 token 序列，便于找最长前缀和管理�
 
 最简单模型是：
 
-\[
+$$
 T_{move}\approx\alpha+\frac{S}{BW_{effective}}.
-\]
+$$
 
 `α` 包含固定开销，`S` 是字节数。有效带宽必须测，不能直接用设备包装上的峰值。并发、NUMA、方向、大小、竞争、内存是否 pinned 都会改变它。
 
@@ -218,15 +218,15 @@ T_{move}\approx\alpha+\frac{S}{BW_{effective}}.
 
 串行经过 SSD 与 H2D 时：
 
-\[
+$$
 T_{serial}\gtrsim\frac{S}{BW_{ssd}}+\frac{S}{BW_{h2d}}.
-\]
+$$
 
 若分块流水化且可独立并行，长流的理想吞吐下界接近最慢一级：
 
-\[
+$$
 T_{pipeline,ideal}\gtrsim\max(S/BW_{ssd},S/BW_{h2d}),
-\]
+$$
 
 但还有管线填充、尾部、每块开销和竞争，实际必然需要验证。
 
@@ -238,9 +238,9 @@ T_{pipeline,ideal}\gtrsim\max(S/BW_{ssd},S/BW_{h2d}),
 
 缓存复用有利的一阶条件：
 
-\[
+$$
 T_{lookup}+T_{retrieve}+T_{inject}<T_{recompute,saved}.
-\]
+$$
 
 这比较的是相同前缀在相同执行条件下的节省量，不是“所有未命中请求的完整 prefill 时间”。如果已有其它 GPU 前缀命中，新增 SSD 命中实际能多省多少，也要按边际收益计算。
 
@@ -369,9 +369,9 @@ GPUDirect RDMA 面向 NIC 与 GPU 内存的数据路径，GPU Direct Storage 面
 
 对请求到达 `t_a`、首 token `t_1`、最后 token `t_N`：
 
-\[
+$$
 TTFT=t_1-t_a,\quad E2E=t_N-t_a,\quad TPOT=\frac{t_N-t_1}{N-1}\quad(N>1).
-\]
+$$
 
 ITL 是相邻 token 的时间差；TPOT 是该请求 decode 阶段的平均值，不能用它代表所有瞬时停顿。`N=1` 的 TPOT 不定义，应记录为空。
 
