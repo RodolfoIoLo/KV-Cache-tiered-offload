@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900" role="img" aria-labelledby="title desc">
+<title id="title">Qwen2.5-7B：Prefill、Decode 与 KV 的增长</title><desc id="desc">原创流程图。模型有28层、隐藏维度3584、28个Query头和4个KV头、每头128维。8192位置的BF16逻辑KV为448MiB。采样出一个新token时它还没有自身KV；下一次前向计算该token时才产生并保存其KV。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#53657b"/></marker><pattern id="hatch" width="8" height="8" patternUnits="userSpaceOnUse"><rect width="8" height="8" fill="#e8edf3"/><path d="M0 8 L8 0" stroke="#c3cdd9" stroke-width="1"/></pattern></defs>
+<rect width="1200" height="900" fill="white"/>
+<g font-family="Microsoft YaHei, Noto Sans CJK SC, Arial, sans-serif" fill="#172b45">
+<text x="40" y="47" font-size="29" fill="#172b45" text-anchor="start" font-weight="700">Qwen2.5-7B：Prefill、Decode 与 KV 的增长</text>
+<text x="40" y="82" font-size="19" fill="#53657b" text-anchor="start" font-weight="400">真实模型配置：28 层，d_model = 3584，Q heads = 28，KV heads = 4，head dimension = 128</text>
+<rect x="50" y="115" width="510" height="545" rx="12" fill="#f0f7ff" stroke="#8cb4ee" stroke-width="1.5"/>
+<text x="305" y="153" font-size="24" fill="#2563eb" text-anchor="middle" font-weight="700">Prefill：处理 8192 个输入位置</text>
+<rect x="80" y="185" width="450" height="76" rx="12" fill="#f3f7fd" stroke="#c7d4e5" stroke-width="1.5"/>
+<text x="305.0" y="215.35" font-size="21" fill="#172b45" text-anchor="middle" font-weight="600">输入 token ID → Embedding</text>
+<text x="305.0" y="245.35" font-size="21" fill="#172b45" text-anchor="middle" font-weight="400">[1, 8192, 3584]</text>
+<polyline points="305,261 305,295" fill="none" stroke="#53657b" stroke-width="2.3" marker-end="url(#arrow)"/>
+<rect x="80" y="295" width="450" height="132" rx="12" fill="#f3f7fd" stroke="#c7d4e5" stroke-width="1.5"/>
+<text x="305.0" y="326.8" font-size="18" fill="#172b45" text-anchor="middle" font-weight="600">依次经过 28 层</text>
+<text x="305.0" y="353.8" font-size="18" fill="#172b45" text-anchor="middle" font-weight="400">每层 Q：[1, 28, 8192, 128]</text>
+<text x="305.0" y="380.8" font-size="18" fill="#172b45" text-anchor="middle" font-weight="400">每层 K/V 各：[1, 4, 8192, 128]</text>
+<text x="305.0" y="407.8" font-size="18" fill="#172b45" text-anchor="middle" font-weight="400">该层 K、V 保存到自己的缓存</text>
+<polyline points="305,427 305,463" fill="none" stroke="#53657b" stroke-width="2.3" marker-end="url(#arrow)"/>
+<rect x="80" y="463" width="450" height="80" rx="12" fill="#f3f7fd" stroke="#c7d4e5" stroke-width="1.5"/>
+<text x="305.0" y="495.5" font-size="20" fill="#172b45" text-anchor="middle" font-weight="600">最后输入位置的隐藏状态 → logits</text>
+<text x="305.0" y="524.5" font-size="20" fill="#172b45" text-anchor="middle" font-weight="400">采样得到第 1 个输出 token y₁</text>
+<text x="305" y="588" font-size="20" fill="#0f8b8d" text-anchor="middle" font-weight="600">此时缓存覆盖 8192 个输入位置</text>
+<text x="305" y="623" font-size="19" fill="#d97706" text-anchor="middle" font-weight="400">y₁ 刚被选中，还没有自己的 KV</text>
+<rect x="630" y="115" width="520" height="545" rx="12" fill="#fff7ed" stroke="#efbb7d" stroke-width="1.5"/>
+<text x="890" y="153" font-size="23" fill="#d97706" text-anchor="middle" font-weight="700">Decode：把刚采样出的 y₁ 送入模型</text>
+<rect x="660" y="185" width="460" height="76" rx="12" fill="#f3f7fd" stroke="#c7d4e5" stroke-width="1.5"/>
+<text x="890.0" y="215.35" font-size="21" fill="#172b45" text-anchor="middle" font-weight="600">输入 y₁ → Embedding</text>
+<text x="890.0" y="245.35" font-size="21" fill="#172b45" text-anchor="middle" font-weight="400">[1, 1, 3584]</text>
+<polyline points="560,502 594,502 594,223 660,223" fill="none" stroke="#53657b" stroke-width="2.3" marker-end="url(#arrow)"/>
+<polyline points="890,261 890,295" fill="none" stroke="#53657b" stroke-width="2.3" marker-end="url(#arrow)"/>
+<rect x="660" y="295" width="460" height="132" rx="12" fill="#f3f7fd" stroke="#c7d4e5" stroke-width="1.5"/>
+<text x="890.0" y="326.8" font-size="18" fill="#172b45" text-anchor="middle" font-weight="600">依次经过 28 层；在每层中：</text>
+<text x="890.0" y="353.8" font-size="18" fill="#172b45" text-anchor="middle" font-weight="400">计算当前 Q：[1, 28, 1, 128]</text>
+<text x="890.0" y="380.8" font-size="18" fill="#172b45" text-anchor="middle" font-weight="400">新 K/V 各：[1, 4, 1, 128]，追加缓存</text>
+<text x="890.0" y="407.8" font-size="18" fill="#172b45" text-anchor="middle" font-weight="400">当前 Q 读取本层旧 KV + 新 KV</text>
+<polyline points="890,427 890,463" fill="none" stroke="#53657b" stroke-width="2.3" marker-end="url(#arrow)"/>
+<rect x="660" y="463" width="460" height="80" rx="12" fill="#f3f7fd" stroke="#c7d4e5" stroke-width="1.5"/>
+<text x="890.0" y="495.5" font-size="20" fill="#172b45" text-anchor="middle" font-weight="600">当前位置最终隐藏状态 → logits</text>
+<text x="890.0" y="524.5" font-size="20" fill="#172b45" text-anchor="middle" font-weight="400">采样得到第 2 个输出 token y₂</text>
+<text x="890" y="588" font-size="20" fill="#0f8b8d" text-anchor="middle" font-weight="600">此时缓存覆盖 8193 个已处理位置</text>
+<text x="890" y="623" font-size="19" fill="#53657b" text-anchor="middle" font-weight="400">下一步输入 y₂；重复相同过程</text>
+<text x="600" y="684" font-size="17" fill="#53657b" text-anchor="middle">Q/K/V 轴顺序：[batch, head, position, dimension]</text>
+<rect x="50" y="698" width="1100" height="140" rx="12" fill="#eaf7f4" stroke="#a3d6c9" stroke-width="1.5"/>
+<text x="600.0" y="744.7" font-size="22" fill="#172b45" text-anchor="middle" font-weight="600">BF16：每元素 2 字节；7 个 Q 头共享 1 组 KV 头</text>
+<text x="600.0" y="775.7" font-size="22" fill="#172b45" text-anchor="middle" font-weight="400">每层、每个位置：(4 × 128 + 4 × 128) × 2 = 2048 字节</text>
+<text x="600.0" y="806.7" font-size="22" fill="#172b45" text-anchor="middle" font-weight="400">全 28 层、每个位置：28 × 2048 = 56 KiB；8192 个位置：448 MiB</text>
+<text x="50" y="875" font-size="18" fill="#53657b" text-anchor="start" font-weight="400">上述为逻辑 KV 数据量；不包含权重、临时激活、缓存池预留、分块空余或管理开销。</text>
+</g></svg>

@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+<title id="title">三种 Attention：哪些位置允许互相读取？</title><desc id="desc">原创掩码示意图。查询位置为行，键位置为列。编码器只屏蔽源序列padding列；解码器自注意力屏蔽未来列和目标padding列；交叉注意力屏蔽源padding列。图形压缩表示真实128和144长度，不是一格一个token。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#53657b"/></marker><pattern id="hatch" width="8" height="8" patternUnits="userSpaceOnUse"><rect width="8" height="8" fill="#e8edf3"/><path d="M0 8 L8 0" stroke="#c3cdd9" stroke-width="1"/></pattern></defs>
+<rect width="1200" height="760" fill="white"/>
+<g font-family="Microsoft YaHei, Noto Sans CJK SC, Arial, sans-serif" fill="#172b45">
+<text x="40" y="47" font-size="29" fill="#172b45" text-anchor="start" font-weight="700">三种 Attention：哪些位置允许互相读取？</text>
+<text x="40" y="82" font-size="19" fill="#53657b" text-anchor="start" font-weight="400">纵轴是 Query 位置，横轴是 Key 位置。下图压缩展示真实矩阵范围，并非一格对应一个 token。</text>
+<text x="200" y="135" font-size="20" fill="#172b45" text-anchor="middle" font-weight="700">Encoder self-attention</text>
+<text x="200" y="168" font-size="21" fill="#2563eb" text-anchor="middle" font-weight="400">[32,16,128,128]</text>
+<text x="200" y="211" font-size="17" fill="#53657b" text-anchor="middle" font-weight="400">源序列位置 →</text>
+<rect x="50" y="235" width="300" height="300" rx="0" fill="#d9f1ec" stroke="#8bbab1" stroke-width="1.5"/>
+<rect x="305" y="235" width="45" height="300" fill="url(#hatch)"/>
+<path d="M80 235 V535 M50 265 H350" stroke="#ffffff" stroke-width="1" opacity=".6"/>
+<path d="M110 235 V535 M50 295 H350" stroke="#ffffff" stroke-width="1" opacity=".6"/>
+<path d="M140 235 V535 M50 325 H350" stroke="#ffffff" stroke-width="1" opacity=".6"/>
+<path d="M170 235 V535 M50 355 H350" stroke="#ffffff" stroke-width="1" opacity=".6"/>
+<path d="M200 235 V535 M50 385 H350" stroke="#ffffff" stroke-width="1" opacity=".6"/>
+<path d="M230 235 V535 M50 415 H350" stroke="#ffffff" stroke-width="1" opacity=".6"/>
+<path d="M260 235 V535 M50 445 H350" stroke="#ffffff" stroke-width="1" opacity=".6"/>
+<path d="M290 235 V535 M50 475 H350" stroke="#ffffff" stroke-width="1" opacity=".6"/>
+<path d="M320 235 V535 M50 505 H350" stroke="#ffffff" stroke-width="1" opacity=".6"/>
+<text x="62" y="261" font-size="14" fill="#53657b" text-anchor="start" font-weight="400">首位置</text>
+<text x="62" y="522" font-size="14" fill="#53657b" text-anchor="start" font-weight="400">末位置</text>
+<text x="200" y="569" font-size="17" fill="#53657b" text-anchor="middle" font-weight="400">源序列位置 ↓</text>
+<text x="327" y="558" font-size="14" fill="#53657b" text-anchor="middle" font-weight="400">PAD</text>
+<text x="200" y="610" font-size="18" fill="#0f8b8d" text-anchor="middle" font-weight="400">可读取所有有效源位置</text>
+<text x="600" y="135" font-size="20" fill="#172b45" text-anchor="middle" font-weight="700">Decoder self-attention</text>
+<text x="600" y="168" font-size="21" fill="#2563eb" text-anchor="middle" font-weight="400">[32,16,144,144]</text>
+<text x="600" y="211" font-size="17" fill="#53657b" text-anchor="middle" font-weight="400">目标序列位置 →</text>
+<rect x="450" y="235" width="300" height="300" rx="0" fill="#d9f1ec" stroke="#8bbab1" stroke-width="1.5"/>
+<path d="M450,235 L750,235 L750,535 Z" fill="#fee7c3"/>
+<rect x="705" y="235" width="45" height="300" fill="url(#hatch)"/>
+<path d="M480 235 V535 M450 265 H750" stroke="#ffffff" stroke-width="1" opacity=".6"/>
+<path d="M510 235 V535 M450 295 H750" stroke="#ffffff" stroke-width="1" opacity=".6"/>
+<path d="M540 235 V535 M450 325 H750" stroke="#ffffff" stroke-width="1" opacity=".6"/>
+<path d="M570 235 V535 M450 355 H750" stroke="#ffffff" stroke-width="1" opacity=".6"/>
+<path d="M600 235 V535 M450 385 H750" stroke="#ffffff" stroke-width="1" opacity=".6"/>
+<path d="M630 235 V535 M450 415 H750" stroke="#ffffff" stroke-width="1" opacity=".6"/>
+<path d="M660 235 V535 M450 445 H750" stroke="#ffffff" stroke-width="1" opacity=".6"/>
+<path d="M690 235 V535 M450 475 H750" stroke="#ffffff" stroke-width="1" opacity=".6"/>
+<path d="M720 235 V535 M450 505 H750" stroke="#ffffff" stroke-width="1" opacity=".6"/>
+<text x="462" y="261" font-size="14" fill="#53657b" text-anchor="start" font-weight="400">首位置</text>
+<text x="462" y="522" font-size="14" fill="#53657b" text-anchor="start" font-weight="400">末位置</text>
+<text x="600" y="569" font-size="17" fill="#53657b" text-anchor="middle" font-weight="400">目标序列位置 ↓</text>
+<text x="727" y="558" font-size="14" fill="#53657b" text-anchor="middle" font-weight="400">PAD</text>
+<text x="600" y="610" font-size="17" fill="#d97706" text-anchor="middle" font-weight="400">只读取当前及更早有效目标位置</text>
+<text x="1000" y="135" font-size="20" fill="#172b45" text-anchor="middle" font-weight="700">Cross-attention</text>
+<text x="1000" y="168" font-size="21" fill="#2563eb" text-anchor="middle" font-weight="400">[32,16,144,128]</text>
+<text x="1000" y="211" font-size="17" fill="#53657b" text-anchor="middle" font-weight="400">源序列位置 →</text>
+<g transform="translate(110 0) scale(0.89 1)">
+<rect x="850" y="235" width="300" height="300" rx="0" fill="#d9f1ec" stroke="#8bbab1" stroke-width="1.5"/>
+<rect x="1105" y="235" width="45" height="300" fill="url(#hatch)"/>
+<path d="M880 235 V535 M850 265 H1150" stroke="#ffffff" stroke-width="1" opacity=".6"/>
+<path d="M910 235 V535 M850 295 H1150" stroke="#ffffff" stroke-width="1" opacity=".6"/>
+<path d="M940 235 V535 M850 325 H1150" stroke="#ffffff" stroke-width="1" opacity=".6"/>
+<path d="M970 235 V535 M850 355 H1150" stroke="#ffffff" stroke-width="1" opacity=".6"/>
+<path d="M1000 235 V535 M850 385 H1150" stroke="#ffffff" stroke-width="1" opacity=".6"/>
+<path d="M1030 235 V535 M850 415 H1150" stroke="#ffffff" stroke-width="1" opacity=".6"/>
+<path d="M1060 235 V535 M850 445 H1150" stroke="#ffffff" stroke-width="1" opacity=".6"/>
+<path d="M1090 235 V535 M850 475 H1150" stroke="#ffffff" stroke-width="1" opacity=".6"/>
+<path d="M1120 235 V535 M850 505 H1150" stroke="#ffffff" stroke-width="1" opacity=".6"/>
+</g>
+<text x="878.5" y="261" font-size="14" fill="#53657b" text-anchor="start" font-weight="400">首位置</text>
+<text x="878.5" y="522" font-size="14" fill="#53657b" text-anchor="start" font-weight="400">末位置</text>
+<text x="1000" y="569" font-size="17" fill="#53657b" text-anchor="middle" font-weight="400">目标序列位置 ↓</text>
+<text x="1113" y="558" font-size="14" fill="#53657b" text-anchor="middle" font-weight="400">PAD</text>
+<text x="1000" y="610" font-size="17" fill="#0f8b8d" text-anchor="middle" font-weight="400">目标 Query 读取全部有效源位置</text>
+<rect x="60" y="652" width="24" height="24" rx="2" fill="#d9f1ec" stroke="#8bbab1" stroke-width="1.5"/>
+<text x="96" y="672" font-size="18" fill="#172b45" text-anchor="start" font-weight="400">允许：mask = 0</text>
+<rect x="355" y="652" width="24" height="24" rx="2" fill="#fee7c3" stroke="#efbb7d" stroke-width="1.5"/>
+<text x="392" y="672" font-size="18" fill="#172b45" text-anchor="start" font-weight="400">未来位置：mask = −∞</text>
+<rect x="780" y="652" width="24" height="24" rx="2" fill="url(#hatch)" stroke="#c3cdd9" stroke-width="1.5"/>
+<text x="818" y="672" font-size="18" fill="#172b45" text-anchor="start" font-weight="400">PAD key：mask = −∞</text>
+<text x="60" y="721" font-size="19" fill="#53657b" text-anchor="start" font-weight="400">mask 加在 softmax 前。PAD Query 行的输出仍须在后续有效位置选择或 loss 中忽略。</text>
+</g></svg>

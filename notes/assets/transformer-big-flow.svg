@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900" role="img" aria-labelledby="title desc">
+<title id="title">Transformer-big：英德翻译中的完整数据流</title><desc id="desc">原创示意图。原论文模型参数为六层编码器、六层解码器、隐藏维度1024。批大小32、源序列128、目标序列144是本文用于张量推导的示例，不是论文固定批次。解码器每层从编码器最终输出取得交叉注意力的Key和Value。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#53657b"/></marker><pattern id="hatch" width="8" height="8" patternUnits="userSpaceOnUse"><rect width="8" height="8" fill="#e8edf3"/><path d="M0 8 L8 0" stroke="#c3cdd9" stroke-width="1"/></pattern></defs>
+<rect width="1200" height="900" fill="white"/>
+<g font-family="Microsoft YaHei, Noto Sans CJK SC, Arial, sans-serif" fill="#172b45">
+<text x="40" y="47" font-size="29" fill="#172b45" text-anchor="start" font-weight="700">Transformer-big：英德翻译中的完整数据流</text>
+<text x="40" y="82" font-size="18" fill="#53657b" text-anchor="start" font-weight="400">原论文模型：6 层 Encoder + 6 层 Decoder，d_model = 1024；示例 batch：B = 32，S = 128，T = 144</text>
+<rect x="50" y="112" width="430" height="66" rx="12" fill="#f3f7fd" stroke="#c7d4e5" stroke-width="1.5"/>
+<text x="265.0" y="137.5" font-size="20" fill="#172b45" text-anchor="middle" font-weight="600">英文源序列 ID</text>
+<text x="265.0" y="166.5" font-size="20" fill="#172b45" text-anchor="middle" font-weight="400">[32, 128]</text>
+<rect x="650" y="112" width="500" height="66" rx="12" fill="#f3f7fd" stroke="#c7d4e5" stroke-width="1.5"/>
+<text x="900.0" y="137.5" font-size="20" fill="#172b45" text-anchor="middle" font-weight="600">右移后的德文目标 ID（训练）</text>
+<text x="900.0" y="166.5" font-size="20" fill="#172b45" text-anchor="middle" font-weight="400">[32, 144]；当前位置预测下一个目标 token</text>
+<polyline points="265,178 265,208" fill="none" stroke="#53657b" stroke-width="2.3" marker-end="url(#arrow)"/>
+<polyline points="900,178 900,208" fill="none" stroke="#53657b" stroke-width="2.3" marker-end="url(#arrow)"/>
+<rect x="50" y="208" width="430" height="80" rx="12" fill="#f3f7fd" stroke="#c7d4e5" stroke-width="1.5"/>
+<text x="265.0" y="240.5" font-size="20" fill="#172b45" text-anchor="middle" font-weight="600">Embedding × √1024 + 位置编码</text>
+<text x="265.0" y="269.5" font-size="20" fill="#172b45" text-anchor="middle" font-weight="400">[32, 128, 1024]</text>
+<rect x="650" y="208" width="500" height="80" rx="12" fill="#f3f7fd" stroke="#c7d4e5" stroke-width="1.5"/>
+<text x="900.0" y="240.5" font-size="20" fill="#172b45" text-anchor="middle" font-weight="600">Embedding × √1024 + 位置编码</text>
+<text x="900.0" y="269.5" font-size="20" fill="#172b45" text-anchor="middle" font-weight="400">[32, 144, 1024]</text>
+<polyline points="265,288 265,325" fill="none" stroke="#53657b" stroke-width="2.3" marker-end="url(#arrow)"/>
+<polyline points="900,288 900,325" fill="none" stroke="#53657b" stroke-width="2.3" marker-end="url(#arrow)"/>
+<rect x="50" y="325" width="430" height="385" rx="12" fill="#f0f7ff" stroke="#8cb4ee" stroke-width="1.5"/>
+<text x="265" y="354" font-size="23" fill="#2563eb" text-anchor="middle" font-weight="700">Encoder 层 × 6</text>
+<rect x="80" y="380" width="370" height="58" rx="12" fill="#f3f7fd" stroke="#c7d4e5" stroke-width="1.5"/>
+<text x="265.0" y="416.0" font-size="20" fill="#172b45" text-anchor="middle" font-weight="600">双向 Self-Attention · 16 头</text>
+<polyline points="265,438 265,465" fill="none" stroke="#53657b" stroke-width="2.3" marker-end="url(#arrow)"/>
+<rect x="80" y="465" width="370" height="50" rx="12" fill="#eaf7f4" stroke="#a3d6c9" stroke-width="1.5"/>
+<text x="265.0" y="496.3" font-size="18" fill="#172b45" text-anchor="middle" font-weight="600">Add &amp; Norm：残差相加后归一化</text>
+<polyline points="265,515 265,540" fill="none" stroke="#53657b" stroke-width="2.3" marker-end="url(#arrow)"/>
+<rect x="80" y="540" width="370" height="58" rx="12" fill="#f3f7fd" stroke="#c7d4e5" stroke-width="1.5"/>
+<text x="265.0" y="576.0" font-size="20" fill="#172b45" text-anchor="middle" font-weight="600">FFN：1024 → 4096 → 1024</text>
+<polyline points="265,598 265,625" fill="none" stroke="#53657b" stroke-width="2.3" marker-end="url(#arrow)"/>
+<rect x="80" y="625" width="370" height="50" rx="12" fill="#eaf7f4" stroke="#a3d6c9" stroke-width="1.5"/>
+<text x="265.0" y="656.3" font-size="18" fill="#172b45" text-anchor="middle" font-weight="600">Add &amp; Norm：残差相加后归一化</text>
+<text x="265" y="698" font-size="17" fill="#53657b" text-anchor="middle" font-weight="400">每层结构相同，参数各自独立</text>
+<rect x="650" y="325" width="500" height="385" rx="12" fill="#fff7ed" stroke="#efbb7d" stroke-width="1.5"/>
+<text x="900" y="354" font-size="23" fill="#d97706" text-anchor="middle" font-weight="700">Decoder 层 × 6</text>
+<rect x="680" y="375" width="440" height="42" rx="12" fill="#f3f7fd" stroke="#c7d4e5" stroke-width="1.5"/>
+<text x="900.0" y="402.65" font-size="19" fill="#172b45" text-anchor="middle" font-weight="600">Causal Self-Attention · 16 头</text>
+<polyline points="900,417 900,432" fill="none" stroke="#53657b" stroke-width="2.3" marker-end="url(#arrow)"/>
+<rect x="680" y="432" width="440" height="33" rx="12" fill="#eaf7f4" stroke="#a3d6c9" stroke-width="1.5"/>
+<text x="900.0" y="454.45" font-size="17" fill="#172b45" text-anchor="middle" font-weight="600">Add &amp; Norm</text>
+<polyline points="900,465 900,480" fill="none" stroke="#53657b" stroke-width="2.3" marker-end="url(#arrow)"/>
+<rect x="680" y="480" width="440" height="42" rx="12" fill="#f3f7fd" stroke="#c7d4e5" stroke-width="1.5"/>
+<text x="900.0" y="506.95" font-size="17" fill="#172b45" text-anchor="middle" font-weight="600">Cross-Attention：Q 来自解码器，K/V 来自 Z</text>
+<polyline points="900,522 900,537" fill="none" stroke="#53657b" stroke-width="2.3" marker-end="url(#arrow)"/>
+<rect x="680" y="537" width="440" height="33" rx="12" fill="#eaf7f4" stroke="#a3d6c9" stroke-width="1.5"/>
+<text x="900.0" y="559.45" font-size="17" fill="#172b45" text-anchor="middle" font-weight="600">Add &amp; Norm</text>
+<polyline points="900,570 900,585" fill="none" stroke="#53657b" stroke-width="2.3" marker-end="url(#arrow)"/>
+<rect x="680" y="585" width="440" height="42" rx="12" fill="#f3f7fd" stroke="#c7d4e5" stroke-width="1.5"/>
+<text x="900.0" y="612.65" font-size="19" fill="#172b45" text-anchor="middle" font-weight="600">FFN：1024 → 4096 → 1024</text>
+<polyline points="900,627 900,642" fill="none" stroke="#53657b" stroke-width="2.3" marker-end="url(#arrow)"/>
+<rect x="680" y="642" width="440" height="33" rx="12" fill="#eaf7f4" stroke="#a3d6c9" stroke-width="1.5"/>
+<text x="900.0" y="664.45" font-size="17" fill="#172b45" text-anchor="middle" font-weight="600">Add &amp; Norm</text>
+<text x="900" y="698" font-size="17" fill="#53657b" text-anchor="middle" font-weight="400">训练并行处理目标位置；生成逐步追加目标</text>
+<polyline points="265,710 265,748" fill="none" stroke="#53657b" stroke-width="2.3" marker-end="url(#arrow)"/>
+<polyline points="900,710 900,748" fill="none" stroke="#53657b" stroke-width="2.3" marker-end="url(#arrow)"/>
+<rect x="50" y="748" width="430" height="70" rx="12" fill="#eaf7f4" stroke="#a3d6c9" stroke-width="1.5"/>
+<text x="265.0" y="775.5" font-size="20" fill="#172b45" text-anchor="middle" font-weight="600">最终 Encoder 输出 Z</text>
+<text x="265.0" y="804.5" font-size="20" fill="#172b45" text-anchor="middle" font-weight="400">[32, 128, 1024]</text>
+<polyline points="480,783 555,783 555,501 680,501" fill="none" stroke="#0f8b8d" stroke-width="2.3" marker-end="url(#arrow)"/>
+<text x="568" y="471" font-size="16" fill="#0f8b8d" text-anchor="start" font-weight="400">每层读取 Z</text>
+<rect x="650" y="748" width="500" height="70" rx="12" fill="#f3f7fd" stroke="#c7d4e5" stroke-width="1.5"/>
+<text x="900.0" y="775.5" font-size="20" fill="#172b45" text-anchor="middle" font-weight="600">词表投影 → logits → softmax</text>
+<text x="900.0" y="804.5" font-size="20" fill="#172b45" text-anchor="middle" font-weight="400">[32, 144, Vocab]；英德共享词表约 37K</text>
+<text x="50" y="854" font-size="18" fill="#53657b" text-anchor="start" font-weight="400">Post-norm：每个子层都执行 LayerNorm(x + Dropout(Sublayer(x)))。图中省略残差旁路线。</text>
+<text x="50" y="882" font-size="16" fill="#53657b" text-anchor="start" font-weight="400">模型参数依据论文 §3、§6 表 3；B、S、T 为张量推导场景，不是论文训练配置的逐批复刻。</text>
+</g></svg>
