@@ -9,15 +9,15 @@
 <text x="600.0" y="150.0" font-size="20" fill="#172b45" text-anchor="middle" font-weight="600">输入激活 X：[32, 128, 1024]</text>
 <polyline points="600,176 600,208" fill="none" stroke="#53657b" stroke-width="2.3" marker-end="url(#arrow)"/>
 <rect x="160" y="208" width="880" height="75" rx="12" fill="#f3f7fd" stroke="#c7d4e5" stroke-width="1.5"/>
-<text x="600.0" y="238.0" font-size="20" fill="#172b45" text-anchor="middle" font-weight="600">Q = XWQ，K = XWK，V = XWV</text>
-<text x="600.0" y="267.0" font-size="20" fill="#172b45" text-anchor="middle" font-weight="400">WQ、WK、WV 各为 [1024, 1024]；Q、K、V 各为 [32, 128, 1024]</text>
+<text x="600.0" y="238.0" font-size="20" fill="#172b45" text-anchor="middle" font-weight="600">1.6 投影：Q_proj = XWQ，K_proj = XWK，V_proj = XWV</text>
+<text x="600.0" y="267.0" font-size="20" fill="#172b45" text-anchor="middle" font-weight="400">WQ、WK、WV 各为 [1024, 1024]；三个投影结果各为 [32, 128, 1024]</text>
 <polyline points="600,283 600,315" fill="none" stroke="#53657b" stroke-width="2.3" marker-end="url(#arrow)"/>
 <rect x="160" y="315" width="880" height="75" rx="12" fill="#eaf7f4" stroke="#a3d6c9" stroke-width="1.5"/>
-<text x="600.0" y="344.85" font-size="21" fill="#172b45" text-anchor="middle" font-weight="600">拆分 head 维度，再调整维度顺序</text>
+<text x="600.0" y="344.85" font-size="21" fill="#172b45" text-anchor="middle" font-weight="600">1.7 整理 Q、K、V：reshape 分头，再 transpose(1,2)</text>
 <text x="600.0" y="374.85" font-size="21" fill="#172b45" text-anchor="middle" font-weight="400">[32, 128, 16, 64] → [32, 16, 128, 64]</text>
 <polyline points="410,390 410,424" fill="none" stroke="#53657b" stroke-width="2.3" marker-end="url(#arrow)"/>
 <rect x="60" y="424" width="700" height="78" rx="12" fill="#f3f7fd" stroke="#c7d4e5" stroke-width="1.5"/>
-<text x="410.0" y="455.8" font-size="18" fill="#172b45" text-anchor="middle" font-weight="600">QKᵀ：每个 Query 与同头的全部 Key 点积</text>
+<text x="410.0" y="455.8" font-size="18" fill="#172b45" text-anchor="middle" font-weight="600">1.8 头内计算：Q @ K.transpose(-2,-1)</text>
 <text x="410.0" y="482.8" font-size="18" fill="#172b45" text-anchor="middle" font-weight="400">[32,16,128,64] × [32,16,64,128] → [32,16,128,128]</text>
 <text x="810" y="440" font-size="20" fill="#0f8b8d" text-anchor="start" font-weight="400">V 保留为</text>
 <text x="810" y="473" font-size="21" fill="#0f8b8d" text-anchor="start" font-weight="600">[32,16,128,64]</text>
@@ -33,7 +33,7 @@
 <text x="425.0" y="712.15" font-size="19" fill="#172b45" text-anchor="middle" font-weight="400">[32,16,128,128] × [32,16,128,64] → [32,16,128,64]</text>
 <polyline points="410,730 410,760" fill="none" stroke="#53657b" stroke-width="2.3" marker-end="url(#arrow)"/>
 <rect x="60" y="760" width="1080" height="75" rx="12" fill="#eaf7f4" stroke="#a3d6c9" stroke-width="1.5"/>
-<text x="600.0" y="789.85" font-size="21" fill="#172b45" text-anchor="middle" font-weight="600">合并 16 个头，再乘输出权重 WO：[1024, 1024]</text>
-<text x="600.0" y="819.85" font-size="21" fill="#172b45" text-anchor="middle" font-weight="400">[32,16,128,64] → [32,128,1024] → [32,128,1024]</text>
+<text x="600.0" y="789.85" font-size="21" fill="#172b45" text-anchor="middle" font-weight="600">1.9 先 transpose(1,2)，再合头，最后乘 WO：[1024, 1024]</text>
+<text x="600.0" y="819.85" font-size="19" fill="#172b45" text-anchor="middle" font-weight="400">[32,16,128,64] → [32,128,16,64] → [32,128,1024] → [32,128,1024]</text>
 <text x="60" y="875" font-size="18" fill="#53657b" text-anchor="start" font-weight="400">Q、K、V 是本次输入产生的激活；WQ、WK、WV、WO 才是训练得到并跨请求复用的参数。</text>
 </g></svg>
