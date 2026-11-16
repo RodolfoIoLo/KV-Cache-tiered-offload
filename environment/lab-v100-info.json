@@ -1,0 +1,243 @@
+{
+  "run_id": "a532cab7-139d-4c2a-a7ca-cb4bd61ccc77",
+  "python": "3.12.12",
+  "system": "Linux",
+  "cuda_compat": {
+    "package": "cuda-compat-12-8",
+    "version": "570.211.01-0ubuntu1",
+    "url": "https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/cuda-compat-12-8_570.211.01-0ubuntu1_amd64.deb",
+    "sha256": "b7f37e80b51b0f99dd767a3c445f01c970f21c1cf90ba140bb752ea3ac39354f",
+    "bytes": 37935896,
+    "checksum_source": "NVIDIA Ubuntu 20.04 CUDA repository Packages.gz",
+    "scope": "per-application user-space libraries; kernel driver unchanged",
+    "documentation": "https://docs.nvidia.com/deploy/cuda-compatibility/latest/forward-compatibility.html"
+  },
+  "cuda_driver_api_version": 12080,
+  "cuda_driver_library": "libcuda.so.570.211.01",
+  "attention_backend": "FLASH_ATTN_V100",
+  "observed_fallback_route_counts": {
+    "baseline": {
+      "decode_scalar_paged": 420
+    },
+    "cold": null,
+    "restore": {
+      "decode_scalar_paged": 420,
+      "prefill_smallq_decode_scalar": 28
+    }
+  },
+  "model_geometry": {
+    "layers": 28,
+    "hidden_size": 1536,
+    "query_heads": 12,
+    "kv_heads": 2,
+    "head_size": 128,
+    "logical_fp16_kv_bytes_per_token": 28672
+  },
+  "profiled_gpu_kv_capacity_tokens": 236528,
+  "protoc": {
+    "version": "33.5",
+    "url": "https://github.com/protocolbuffers/protobuf/releases/download/v33.5/protoc-33.5-linux-x86_64.zip",
+    "archive_sha256": "24e58fb231d50306ee28491f33a170301e99540f7e29ca461e0e80fd1239f8d1",
+    "archive_bytes": 3561158,
+    "checksum_source": "official GitHub release asset digest",
+    "observed_version": "libprotoc 33.5"
+  },
+  "private_rdma": {
+    "repository": "https://github.com/linux-rdma/rdma-core",
+    "tag": "v56.1",
+    "revision": "945e2f4d559836cd65487cf7372bd973c29e29e0",
+    "url": "https://codeload.github.com/linux-rdma/rdma-core/tar.gz/945e2f4d559836cd65487cf7372bd973c29e29e0",
+    "archive_sha256": "755d129f8315770e95cae791f79f9373ccff672bfbbfa8faead5faa22253fd6b",
+    "scope": "private IN_PLACE build; no installation or shared OFED changes"
+  },
+  "cuda_transport": {
+    "run_id": "a532cab7-139d-4c2a-a7ca-cb4bd61ccc77",
+    "passed": true,
+    "transport": "tcp",
+    "forced_tcp": true,
+    "separate_processes": true,
+    "bytes_each_direction": 8388608,
+    "payload_path": "GPU -> separate-process DRAM -> GPU",
+    "bitwise_equal": true,
+    "sha256": "bdf23837181f5808331800c1ae2b4f7d7a839536b10d58491471c50dde23833a",
+    "private_rdma_libraries": [
+      "libibverbs.so.1.14.56.1",
+      "libmlx5.so.1.25.56.1"
+    ]
+  },
+  "architecture": "x86_64",
+  "torch": "2.10.0+cu128",
+  "torch_cuda": "12.8",
+  "package_version": "1.5.3+cu128",
+  "mooncake": "0.3.14",
+  "gpu": "Tesla V100S-PCIE-32GB, 32768 MiB, 535.230.02",
+  "cuda_compiler": "nvcc: NVIDIA (R) Cuda compiler driver\nCopyright (c) 2005-2025 NVIDIA Corporation\nBuilt on Fri_Feb_21_20:23:50_PST_2025\nCuda compilation tools, release 12.8, V12.8.93\nBuild cuda_12.8.r12.8/compiler.35583870_0",
+  "cuda_packages": [
+    {
+      "Package": "cuda-cccl-12-8",
+      "Version": "12.8.90-1",
+      "Filename": "./cuda-cccl-12-8_12.8.90-1_amd64.deb",
+      "SHA256": "873dbdfc3c1aa2806145c94ba75d058f658974ffa2366c4bba9190440bacece4"
+    },
+    {
+      "Package": "cuda-crt-12-8",
+      "Version": "12.8.93-1",
+      "Filename": "./cuda-crt-12-8_12.8.93-1_amd64.deb",
+      "SHA256": "92a3c8eda8d3a3a8f3de71e0acf4edb8be568b20792e5bf7618898a72ffd6d10"
+    },
+    {
+      "Package": "cuda-cudart-12-8",
+      "Version": "12.8.90-1",
+      "Filename": "./cuda-cudart-12-8_12.8.90-1_amd64.deb",
+      "SHA256": "929554bc2f0831eefec4e212897d0cbb0db70cab75c5eeadd2a4a43e7d7ffb68"
+    },
+    {
+      "Package": "cuda-cudart-dev-12-8",
+      "Version": "12.8.90-1",
+      "Filename": "./cuda-cudart-dev-12-8_12.8.90-1_amd64.deb",
+      "SHA256": "b9e927a530535631f789098080e5e59bcc3bc2ac368d7c7af51ea4fbfe8ad7eb"
+    },
+    {
+      "Package": "cuda-driver-dev-12-8",
+      "Version": "12.8.90-1",
+      "Filename": "./cuda-driver-dev-12-8_12.8.90-1_amd64.deb",
+      "SHA256": "5ffbd709ee3ed8dee4d82a07de6c789efd4b37c3b23e72f59e0c519c1701a692"
+    },
+    {
+      "Package": "cuda-nvcc-12-8",
+      "Version": "12.8.93-1",
+      "Filename": "./cuda-nvcc-12-8_12.8.93-1_amd64.deb",
+      "SHA256": "eaa8aaa7fc4bfbf8f4bf10fd5a29f04e0cf60142e1a61de42f03aba76835070e"
+    },
+    {
+      "Package": "cuda-nvvm-12-8",
+      "Version": "12.8.93-1",
+      "Filename": "./cuda-nvvm-12-8_12.8.93-1_amd64.deb",
+      "SHA256": "9d27f5895dd5ea1bb8db3180faa30d5a3d2a50237ed5a82c2ec6b65665b6cba1"
+    }
+  ],
+  "rust": "rustc 1.95.0 (59807616e 2026-04-14)",
+  "wheel_sources": [
+    {
+      "package": "torch",
+      "version": "2.10.0",
+      "official_pypi_matches": [
+        {
+          "filename": "torch-2.10.0-3-cp312-cp312-manylinux_2_28_x86_64.whl",
+          "sha256": "98c01b8bb5e3240426dcde1446eed6f40c778091c8544767ef1168fc663a05a6"
+        },
+        {
+          "filename": "torch-2.10.0-cp312-cp312-manylinux_2_28_x86_64.whl",
+          "sha256": "787124e7db3b379d4f1ed54dd12ae7c741c16a4d29b49c0226a89bea50923ffb"
+        }
+      ]
+    },
+    {
+      "package": "torchvision",
+      "version": "0.25.0",
+      "official_pypi_matches": [
+        {
+          "filename": "torchvision-0.25.0-cp312-cp312-manylinux_2_28_x86_64.whl",
+          "sha256": "f25aa9e380865b11ea6e9d99d84df86b9cc959f1a007cd966fc6f1ab2ed0e248"
+        }
+      ]
+    },
+    {
+      "package": "torchaudio",
+      "version": "2.10.0",
+      "official_pypi_matches": [
+        {
+          "filename": "torchaudio-2.10.0-cp312-cp312-manylinux_2_28_x86_64.whl",
+          "sha256": "0e77b2956448d63790a99beed0b74ac8b8cd3a94dcdd9ad01974411078f46278"
+        }
+      ]
+    }
+  ],
+  "source_url": "https://github.com/1CatAI/1Cat-vLLM",
+  "source_commit": "cb97f379b67eb9f5703709db961d9dabcdecbcff",
+  "model": {
+    "provider": "ModelScope",
+    "model_id": "Qwen/Qwen2.5-1.5B-Instruct",
+    "revision": "3c3787b7c81927cc64ad45dc32ff1c9ce2a5de34",
+    "files": [
+      {
+        "path": "LICENSE",
+        "bytes": 11343,
+        "sha256": "832dd9e00a68dd83b3c3fb9f5588dad7dcf337a0db50f7d9483f310cd292e92e"
+      },
+      {
+        "path": "README.md",
+        "bytes": 4917,
+        "sha256": "2e1bcd8bd964728a820be709fa0f7b9dd54817a94fd2254c535df70c5e67fada"
+      },
+      {
+        "path": "config.json",
+        "bytes": 660,
+        "sha256": "98d2ff8cc47488d08a2b0b3acf4eb99ef210779b42bd48605f6b8e36acdbf670"
+      },
+      {
+        "path": "generation_config.json",
+        "bytes": 242,
+        "sha256": "e558847a8b4402616f1273797b015104dc266fe4b520056fca88823ba8f8ebe6"
+      },
+      {
+        "path": "merges.txt",
+        "bytes": 1671839,
+        "sha256": "599bab54075088774b1733fde865d5bd747cbcc7a547c5bc12610e874e26f5e3"
+      },
+      {
+        "path": "model.safetensors",
+        "bytes": 3087467144,
+        "sha256": "dd924a11b4c220f385b51ffa522daea7c9f3d850e31b162bb5661df483c6d3ee"
+      },
+      {
+        "path": "tokenizer.json",
+        "bytes": 7031645,
+        "sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539"
+      },
+      {
+        "path": "tokenizer_config.json",
+        "bytes": 7305,
+        "sha256": "5b5d4f65d0acd3b2d56a35b56d374a36cbc1c8fa5cf3b3febbbfabf22f359583"
+      },
+      {
+        "path": "vocab.json",
+        "bytes": 2776833,
+        "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+      }
+    ]
+  },
+  "dtype": "float16",
+  "tensor_parallel_size": 1,
+  "max_model_len": 2048,
+  "max_num_seqs": 1,
+  "block_size": 16,
+  "gpu_memory_utilization": 0.3,
+  "enforce_eager": true,
+  "store_mode": "standalone-store",
+  "transport": "tcp",
+  "store_dram_bytes": 1073741824,
+  "local_transfer_buffer_bytes": 268435456,
+  "ssd_enabled": false,
+  "validation": {
+    "baseline": {
+      "passed": true,
+      "successful_operation": null,
+      "successful_payload_bytes": 0,
+      "generated_logprob_max_error": 0
+    },
+    "cold": {
+      "passed": true,
+      "successful_operation": "save_put",
+      "successful_payload_bytes": 14680064.0,
+      "generated_logprob_max_error": 0.0
+    },
+    "restore": {
+      "passed": true,
+      "successful_operation": "load_get",
+      "successful_payload_bytes": 14221312.0,
+      "generated_logprob_max_error": 1.9046710804104805e-05
+    }
+  },
+  "validation_scope": "fixed 512-token request, 16 generated token IDs and selected logprobs; cross-process DRAM prefix restore"
+}
