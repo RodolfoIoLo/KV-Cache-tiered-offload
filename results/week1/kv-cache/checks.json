@@ -1,0 +1,117 @@
+{
+  "kv-equivalence": {
+    "passed": true,
+    "maximum_logit_error": 5.551115123125783e-16,
+    "cache_lengths": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "generated_ids": [
+      4,
+      0,
+      13,
+      12,
+      9,
+      9,
+      9,
+      9
+    ],
+    "restored_cache_equal": true,
+    "generation_end_cache_length": 11,
+    "expected_end_length": 11,
+    "two_token_chunk_equal": true
+  },
+  "kv-prefix": {
+    "passed": true,
+    "partial_hits": [
+      3,
+      3
+    ],
+    "wrong_prefix_hit": 0,
+    "wrong_identity_hit": 0,
+    "branches_isolated": true,
+    "full_hit_uses_saved_last_logits": true
+  },
+  "kv-radix": {
+    "passed": true,
+    "tree": [
+      {
+        "edge": [
+          1,
+          2
+        ],
+        "terminal": false,
+        "children": [
+          {
+            "edge": [
+              3,
+              4
+            ],
+            "terminal": true,
+            "children": []
+          },
+          {
+            "edge": [
+              5
+            ],
+            "terminal": true,
+            "children": []
+          }
+        ]
+      }
+    ],
+    "partial_edge_match": 3,
+    "matching_prefix_can_slice_compatible_cache": true
+  },
+  "kv-size": {
+    "passed": true,
+    "measured_payloads": [
+      {
+        "dtype": "torch.float64",
+        "batch": 1,
+        "tokens": 6,
+        "bytes": 1536
+      },
+      {
+        "dtype": "torch.float64",
+        "batch": 2,
+        "tokens": 6,
+        "bytes": 3072
+      },
+      {
+        "dtype": "torch.float64",
+        "batch": 1,
+        "tokens": 12,
+        "bytes": 3072
+      },
+      {
+        "dtype": "torch.float32",
+        "batch": 1,
+        "tokens": 6,
+        "bytes": 768
+      },
+      {
+        "dtype": "torch.float32",
+        "batch": 2,
+        "tokens": 6,
+        "bytes": 1536
+      },
+      {
+        "dtype": "torch.float32",
+        "batch": 1,
+        "tokens": 12,
+        "bytes": 1536
+      }
+    ],
+    "analytical_gib": [
+      16,
+      80,
+      4
+    ],
+    "note": "payload only, no weights or allocator metadata"
+  }
+}
