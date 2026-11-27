@@ -1,0 +1,20 @@
+{
+  "path_checks_passed": true,
+  "paired_revisits": 6,
+  "matching_output_pairs": 6,
+  "all_output_token_ids_equal": true,
+  "warmups_excluded": true,
+  "gpu_local_hit_tokens": 0,
+  "memory_tier_verified": true,
+  "per_request_successful_get_bytes_verified": true,
+  "scope": "Qwen2.5-1.5B FP16, V100, single-host TCP, synthetic token IDs",
+  "limitations": [
+    "Four generated tokens per request",
+    "Selected lengths 64 to 1536 tokens",
+    "Generation compares IDs; full-vocabulary logits are not captured"
+  ],
+  "mismatches": [],
+  "max_num_batched_tokens": 64,
+  "sample_scope": "One pair per length, seed 53, repetition 1; excludes warmups. A separate correctness check.",
+  "excluded_from_primary_ttft_statistics": true
+}

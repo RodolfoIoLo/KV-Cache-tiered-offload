@@ -1,0 +1,100 @@
+{
+  "length": 256,
+  "seed": 53,
+  "repetition": 1,
+  "request_digest": "dc059f60167fe632f71c67c0a0164d0ac014611a2e47dcf3afbbc84871109417",
+  "same_input": true,
+  "read_ids": [
+    82,
+    13,
+    220,
+    16
+  ],
+  "recompute_ids": [
+    220,
+    16,
+    15,
+    15
+  ],
+  "read_first_token_candidates": {
+    "s": -4.771231651306152,
+    " ": -4.771231651306152,
+    ",": -4.841544151306152,
+    "t": -5.154044151306152,
+    ".": -5.169669151306152,
+    "y": -5.419669151306152,
+    "\"": -5.669669151306152,
+    "ent": -5.724356651306152,
+    "a": -5.739981651306152,
+    "_": -5.825919151306152
+  },
+  "recompute_first_token_candidates": {
+    " ": -4.768648147583008,
+    "s": -4.776460647583008,
+    ",": -4.838960647583008,
+    "t": -5.151460647583008,
+    ".": -5.174898147583008,
+    "y": -5.417085647583008,
+    "\"": -5.667085647583008,
+    "ent": -5.737398147583008,
+    "a": -5.737398147583008,
+    "_": -5.823335647583008
+  },
+  "observed": "Read has tied top scores for s and space; recompute ranks space first.",
+  "interpretation": "Bitwise-equal copied KV plus divergent full logits and different attention execution routes locate the discrepancy after the lossless transfer. FP16 accumulation and query-shape differences explain the observed sensitivity at a tied top candidate; individual operator error attribution was not performed.",
+  "logprobs_diagnostic_excluded_from_timing": true,
+  "kv_round_trip": {
+    "bitwise_equal": true,
+    "blocks": 16,
+    "bytes": 7340032
+  },
+  "full_vocabulary": {
+    "marker": {
+      "tag": "revisit-256-1-0",
+      "kind": "revisit",
+      "length": 256,
+      "repetition": 1,
+      "index": 0
+    },
+    "vocabulary": 151936,
+    "max_absolute_logit_error": 0.01953125,
+    "mean_absolute_logit_error": 0.005727779120206833,
+    "read_argmax": 82,
+    "recompute_argmax": 220,
+    "read_top_logits": [
+      11.46875,
+      11.46875,
+      11.3984375
+    ],
+    "read_top_ids": [
+      220,
+      82,
+      11
+    ],
+    "read_first_forward": {
+      "gpu_ms": 52.903934478759766,
+      "input_tokens": 8,
+      "attention_routes": {
+        "prefill_smallq_decode_scalar": 28,
+        "prefill_prefix_flash": 28
+      }
+    },
+    "recompute_top_logits": [
+      11.4765625,
+      11.46875,
+      11.40625
+    ],
+    "recompute_top_ids": [
+      220,
+      82,
+      11
+    ],
+    "recompute_first_forward": {
+      "gpu_ms": 30.372896194458008,
+      "input_tokens": 264,
+      "attention_routes": {
+        "prefill_no_prefix_dense_flash": 28
+      }
+    }
+  }
+}

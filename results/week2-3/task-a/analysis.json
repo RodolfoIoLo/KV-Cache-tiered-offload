@@ -1,0 +1,104 @@
+{
+  "required_steps": {
+    "deployment": "completed",
+    "same_instance_eviction_revisit": "completed",
+    "matched_store_and_recompute_arms": "completed",
+    "length_sweep": "completed",
+    "ttft_cost_analysis": "completed_with_recorded_numerical_boundary"
+  },
+  "primary_pairs": 36,
+  "samples_per_length": 6,
+  "output_identity": {
+    "matching_pairs": 35,
+    "total_pairs": 36
+  },
+  "primary_costs": [
+    {
+      "prefix_tokens": 64,
+      "primary_read_median_ms": 101.8284225,
+      "primary_recompute_median_ms": 65.1312645,
+      "primary_get_median_ms": 4.585564136505127,
+      "primary_lookup_median_ms": 0.22515840828418732,
+      "paired_median_read_penalty_ms": 36.820353000000004
+    },
+    {
+      "prefix_tokens": 128,
+      "primary_read_median_ms": 106.18269599999999,
+      "primary_recompute_median_ms": 65.392393,
+      "primary_get_median_ms": 7.266093045473099,
+      "primary_lookup_median_ms": 0.21895207464694977,
+      "paired_median_read_penalty_ms": 41.2914465
+    },
+    {
+      "prefix_tokens": 256,
+      "primary_read_median_ms": 117.9086005,
+      "primary_recompute_median_ms": 66.4049925,
+      "primary_get_median_ms": 16.80859737098217,
+      "primary_lookup_median_ms": 0.2457592636346817,
+      "paired_median_read_penalty_ms": 50.694149499999995
+    },
+    {
+      "prefix_tokens": 512,
+      "primary_read_median_ms": 128.369009,
+      "primary_recompute_median_ms": 66.140457,
+      "primary_get_median_ms": 26.759294793009758,
+      "primary_lookup_median_ms": 0.24974718689918518,
+      "paired_median_read_penalty_ms": 62.3152345
+    },
+    {
+      "prefix_tokens": 1024,
+      "primary_read_median_ms": 156.15681899999998,
+      "primary_recompute_median_ms": 69.1806805,
+      "primary_get_median_ms": 48.871004953980446,
+      "primary_lookup_median_ms": 0.2840515226125717,
+      "paired_median_read_penalty_ms": 85.76650649999999
+    },
+    {
+      "prefix_tokens": 1536,
+      "primary_read_median_ms": 180.571005,
+      "primary_recompute_median_ms": 87.03087300000001,
+      "primary_get_median_ms": 72.8168934583664,
+      "primary_lookup_median_ms": 0.3628823906183243,
+      "paired_median_read_penalty_ms": 93.88046500000002
+    }
+  ],
+  "additional_checks": {
+    "copied_blocks": 116,
+    "copied_bytes": 53215232,
+    "bitwise_equal": true
+  },
+  "findings": [
+    "Across measured 64\u20131536-token synthetic prefixes, same-host TCP reads have higher median TTFT than recomputation with this small model and backend.",
+    "GET time increases with prefix size; for 1536 tokens its median is 72.82 ms, while lookup is about 0.36 ms.",
+    "In separate synchronized diagnostics, dense recomputation uses prefill_no_prefix_dense_flash. Cached-prefix processing records prefill_smallq_decode_scalar and prefill_prefix_flash for the eight new tokens.",
+    "For 256 tokens the diagnostic first-forward spans are 30.37 ms (recompute) and 52.90 ms (read). For 1536 they are 76.32 and 66.65 ms: this observed compute saving is smaller than the primary GET cost.",
+    "Subtracting GET and lookup counters from server TTFT leaves additional work. This residual is not attributed entirely to scheduling; it includes model execution and other framework costs.",
+    "The 256-token outlier has lossless KV transport but divergent logits at a tied top candidate. Exact output identity fails for that default-path sample and remains explicit.",
+    "With a 64-token prefill scheduling budget in both arms, all six additional paired outputs match, including the original mismatch input. This also makes recomputation much slower and changes the latency ranking; its results are kept separate."
+  ],
+  "limitations": [
+    "Primary timing uses six pairs per selected length and four generated tokens per request.",
+    "Diagnostic forward spans include CPU launch gaps and instrumentation effects; they are not kernel-only durations.",
+    "Conclusions apply to Qwen2.5-1.5B FP16 on V100 with this pinned fork, 160 GPU blocks and same-host TCP.",
+    "The VLLM_BATCH_INVARIANT compatibility experiment was stopped after showing multi-second latency; it is excluded from primary statistics."
+  ],
+  "fixed_granularity_correctness_check": {
+    "max_num_batched_tokens": 64,
+    "lengths": [
+      64,
+      128,
+      256,
+      512,
+      1024,
+      1536
+    ],
+    "pairs": 6,
+    "output_pairs_equal": 6,
+    "includes_original_mismatch": true,
+    "seed": 53,
+    "repetition": 1,
+    "purpose": "Additional controlled correctness and scheduling-sensitivity check",
+    "performance_interpretation": "Smaller chunks add repeated prefill and scheduling work to recomputation. Its latency is reported separately from the 36-pair normal-budget experiment.",
+    "caveat": "Default 2048-token scheduling still has the recorded 35/36 output boundary."
+  }
+}

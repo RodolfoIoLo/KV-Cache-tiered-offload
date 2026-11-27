@@ -1,0 +1,157 @@
+{
+  "copied_kv_bitwise_equal": true,
+  "verified_get_blocks": 116,
+  "verified_get_bytes": 53215232,
+  "comparisons": [
+    {
+      "marker": {
+        "tag": "revisit-1536-1-0",
+        "kind": "revisit",
+        "length": 1536,
+        "repetition": 1,
+        "index": 0
+      },
+      "vocabulary": 151936,
+      "max_absolute_logit_error": 0.008544921875,
+      "mean_absolute_logit_error": 0.0015902873128652573,
+      "read_argmax": 50,
+      "recompute_argmax": 50,
+      "read_top_logits": [
+        12.6015625,
+        11.9296875,
+        11.9296875
+      ],
+      "read_top_ids": [
+        50,
+        35,
+        13
+      ],
+      "read_first_forward": {
+        "gpu_ms": 66.65318298339844,
+        "input_tokens": 8,
+        "attention_routes": {
+          "prefill_smallq_decode_scalar": 28,
+          "prefill_prefix_flash": 28
+        }
+      },
+      "recompute_top_logits": [
+        12.6015625,
+        11.9296875,
+        11.9296875
+      ],
+      "recompute_top_ids": [
+        50,
+        35,
+        13
+      ],
+      "recompute_first_forward": {
+        "gpu_ms": 76.32486724853516,
+        "input_tokens": 1544,
+        "attention_routes": {
+          "prefill_no_prefix_dense_flash": 28
+        }
+      }
+    },
+    {
+      "marker": {
+        "tag": "revisit-256-1-0",
+        "kind": "revisit",
+        "length": 256,
+        "repetition": 1,
+        "index": 0
+      },
+      "vocabulary": 151936,
+      "max_absolute_logit_error": 0.01953125,
+      "mean_absolute_logit_error": 0.005727779120206833,
+      "read_argmax": 82,
+      "recompute_argmax": 220,
+      "read_top_logits": [
+        11.46875,
+        11.46875,
+        11.3984375
+      ],
+      "read_top_ids": [
+        220,
+        82,
+        11
+      ],
+      "read_first_forward": {
+        "gpu_ms": 52.903934478759766,
+        "input_tokens": 8,
+        "attention_routes": {
+          "prefill_smallq_decode_scalar": 28,
+          "prefill_prefix_flash": 28
+        }
+      },
+      "recompute_top_logits": [
+        11.4765625,
+        11.46875,
+        11.40625
+      ],
+      "recompute_top_ids": [
+        220,
+        82,
+        11
+      ],
+      "recompute_first_forward": {
+        "gpu_ms": 30.372896194458008,
+        "input_tokens": 264,
+        "attention_routes": {
+          "prefill_no_prefix_dense_flash": 28
+        }
+      }
+    },
+    {
+      "marker": {
+        "tag": "revisit-64-1-0",
+        "kind": "revisit",
+        "length": 64,
+        "repetition": 1,
+        "index": 0
+      },
+      "vocabulary": 151936,
+      "max_absolute_logit_error": 0.015625,
+      "mean_absolute_logit_error": 0.0027636641170829535,
+      "read_argmax": 13,
+      "recompute_argmax": 13,
+      "read_top_logits": [
+        13.7734375,
+        13.3203125,
+        13.296875
+      ],
+      "read_top_ids": [
+        13,
+        291,
+        220
+      ],
+      "read_first_forward": {
+        "gpu_ms": 52.294654846191406,
+        "input_tokens": 8,
+        "attention_routes": {
+          "prefill_smallq_decode_scalar": 28,
+          "prefill_prefix_flash": 28
+        }
+      },
+      "recompute_top_logits": [
+        13.7734375,
+        13.328125,
+        13.296875
+      ],
+      "recompute_top_ids": [
+        13,
+        291,
+        220
+      ],
+      "recompute_first_forward": {
+        "gpu_ms": 29.732864379882812,
+        "input_tokens": 72,
+        "attention_routes": {
+          "prefill_no_prefix_dense_flash": 28
+        }
+      }
+    }
+  ],
+  "timing_scope": "Untimed diagnostics. CUDA event forward span includes CPU launch gaps.",
+  "excluded_from_primary_ttft_statistics": true,
+  "timing_comparison_scope": "Three diagnostic paired requests; instrumentation adds synchronization and copies. Excluded from the 36 primary timing pairs."
+}
