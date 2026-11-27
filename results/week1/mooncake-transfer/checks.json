@@ -1,0 +1,16 @@
+{
+  "passed": true,
+  "scope": "two processes on one ECS host",
+  "payload_bytes": 3541,
+  "kv_tensor_bytes": 768,
+  "prefix_tokens": 3,
+  "continuation_tokens": 2,
+  "kv_equal": true,
+  "logits_max_error": 2.220446049250313e-16,
+  "next_ids": [
+    9
+  ],
+  "transport": "Mooncake TransferEngine TCP",
+  "payload_via": "Mooncake TransferEngine",
+  "control_via": "local TCP socket"
+}
