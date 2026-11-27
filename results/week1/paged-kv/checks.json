@@ -1,0 +1,35 @@
+{
+  "passed": true,
+  "block_size_tokens": 4,
+  "shared_block_count": 3,
+  "unshared_block_count": 4,
+  "request_tables": {
+    "A": {
+      "blocks": [
+        0,
+        1
+      ],
+      "tokens": 6
+    },
+    "B": {
+      "blocks": [
+        0,
+        2
+      ],
+      "tokens": 5
+    }
+  },
+  "boundary_block_counts": {
+    "3": 1,
+    "4": 1,
+    "5": 2
+  },
+  "copy_on_write": true,
+  "fork_tail_before": 0,
+  "tail_after_append": {
+    "A": 2,
+    "B": 0
+  },
+  "all_blocks_reclaimed": true,
+  "note": "CPU gather and attention compared with contiguous KV"
+}
