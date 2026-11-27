@@ -1,0 +1,81 @@
+{
+  "python": "3.12.12",
+  "platform": "Linux-5.4.0-216-generic-x86_64-with-glibc2.31",
+  "torch": "2.10.0",
+  "mooncake": "0.3.14",
+  "source_revision": "cb97f379b67eb9f5703709db961d9dabcdecbcff",
+  "source_clean": true,
+  "gpu": "Tesla V100S-PCIE-32GB, 535.230.02, 32768 MiB",
+  "model": {
+    "provider": "ModelScope",
+    "model_id": "Qwen/Qwen2.5-1.5B-Instruct",
+    "revision": "3c3787b7c81927cc64ad45dc32ff1c9ce2a5de34"
+  },
+  "dtype": "float16",
+  "model_max_tokens": 2048,
+  "gpu_blocks": 160,
+  "block_tokens": 16,
+  "gpu_kv_capacity_tokens": 2560,
+  "gpu_kv_pool_bytes": 73400320,
+  "gpu_memory_utilization": 0.3,
+  "gpu_prefix_caching": true,
+  "prefix_hash": "sha256",
+  "concurrency": 1,
+  "output_tokens": 4,
+  "divergent_suffix_tokens": 8,
+  "transport": "same-host TCP",
+  "store_dram_bytes": 4294967296,
+  "ssd_enabled": false,
+  "workload": {
+    "kind": "synthetic token IDs",
+    "prefix_lengths": [
+      64,
+      128,
+      256,
+      512,
+      1024,
+      1536
+    ],
+    "seeds": [
+      53,
+      73
+    ],
+    "measured_repetitions_per_seed": 3,
+    "excluded_warmups_per_length_per_arm": 1,
+    "pressure_requests": 3,
+    "pressure_tokens_per_request": 1024,
+    "sampling": "greedy, ignore_eos"
+  },
+  "metric": {
+    "client_ttft": "HTTP send to first SSE chunk containing generated token IDs",
+    "get_time": "Mooncake load_get operation duration; counter delta per revisit"
+  },
+  "commands": {
+    "first_batch": [
+      "bash scripts/task_a_run.sh recompute NEW_COMPUTE --seed 53",
+      "bash scripts/task_a_run.sh store NEW_READ --seed 53"
+    ],
+    "second_batch": [
+      "bash scripts/task_a_run.sh store NEW_READ --seed 73",
+      "bash scripts/task_a_run.sh recompute NEW_COMPUTE --seed 73"
+    ],
+    "common_args": "--lengths 64,128,256,512,1024,1536 --repetitions 3 --warmups 1",
+    "diagnostic": "TASK_A_DIAGNOSTICS=1 bash scripts/task_a_run.sh ARM NEW_DIRECTORY --lengths 64,256,1536 --warmups 0 --repetitions 1 --repetition-start 1 --seed 53",
+    "fixed_granularity": "TASK_A_BATCH_TOKENS=64 bash scripts/task_a_run.sh ARM NEW_DIRECTORY --lengths 64,128,256,512,1024,1536 --warmups 0 --repetitions 1 --repetition-start 1 --seed 53"
+  },
+  "diagnostics": {
+    "worker_extension": "task_a_diagnostics.DiagnosticExtension",
+    "enabled_only_in_untimed_runs": true,
+    "cuda_buffer_capture": "cudaMemcpy device-to-host before PUT and after successful GET; bytes compared directly",
+    "captured_logit_vocabulary": 151936,
+    "profile_lengths": [
+      64,
+      256,
+      1536
+    ],
+    "supplemental_correctness_max_num_batched_tokens": 64
+  },
+  "plot_dependencies": {
+    "matplotlib": "3.11.2"
+  }
+}
