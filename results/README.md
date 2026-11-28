@@ -38,7 +38,7 @@
 | [samples.csv](week2-3/task-a/samples.csv) | 36 对正式回访的逐样本原始测量记录与输出 token IDs |
 | [checks.json](week2-3/task-a/checks.json) | 36 对路径审计、GPU 本地 0 命中、DRAM 来源校验与 35/36 输出一致性记录 |
 | [analysis.json](week2-3/task-a/analysis.json) | 结构化结论、关键成本表与局限性摘要 |
-| [diagnostics.json](week2-3/task-a/diagnostics.json) | 独立非计时诊断（64/256/1536）：116 块（53.2 MiB）KV 逐字节无损证明、全词表 logits 误差与注意力路由耗时 |
+| [diagnostics.json](week2-3/task-a/diagnostics.json) | 独立非计时诊断（64/256/1536）：116 块（50.75 MiB，约 53.2 MB）KV 逐字节无损证明、全词表 logits 误差与注意力路由耗时 |
 | [numerical-check.json](week2-3/task-a/numerical-check.json) | `256 / seed=53 / rep=1` 唯一不一致样本的 Top-10 logprobs、KV 往返与全词表归因 |
 | [fixed-granularity/](week2-3/task-a/fixed-granularity/) | `max_num_batched_tokens=64` 补充对照（6/6 输出全一致，独立于主 TTFT 统计） |
 

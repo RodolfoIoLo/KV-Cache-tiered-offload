@@ -19,3 +19,4 @@
 
 - 本地 CPU / ECS 的非 CUDA 环境与实验室 V100 GPU 环境严格隔离，互不混用依赖。
 - 实验室服务器上的兼容性组件（私有 CUDA 12.8 编译器、`cuda-compat 570.211.01`、`protoc 33.5`、`rdma-core v56.1`）均位于项目独立目录，未修改宿主机全局驱动或系统库；目录结构见 [服务器目录说明](../docs/02-服务器目录说明.md)。
+- 任务 A 的端到端复现示例（含 `TASK_A_ENV`、`TASK_A_MODEL`、四组输出目录与汇总绘图）统一见 [项目说明 · 任务 A 完整复现示例](../docs/00-项目说明.md#2-任务-a-实机基准完整复现示例)。重新运行完整汇总依赖各次实验的 `serve.log`；仅重绘公开曲线可直接读取 [results/week2-3/task-a/summary.csv](../results/week2-3/task-a/summary.csv)。

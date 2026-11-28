@@ -87,7 +87,7 @@ flowchart TB
     Run["scripts/task_a_run.sh<br/>（服务端编排与清理）<br/>• 校验端口与启动前 GPU 状态<br/>• store 模式拉起 Master + 4 GiB Owner<br/>• 拉起锁定 160 块的 vLLM 实例<br/>• 结束后用 pidfd 安全清理本轮全部进程"]
     -->|"拉起服务后调用"| Bench["scripts/task_a_benchmark.py<br/>（流式发请求与 /metrics 审计）<br/>• 按种子生成 Build / Pressure / Revisit 序列<br/>• 流式 SSE 精准测客户端 TTFT<br/>• 每次请求前后拉 /metrics 做差值断言<br/>• 逐行落盘 measurements.jsonl"]
 
-    Route["scripts/task_a_routing.py<br/>（可选选路插件，任务 A 第 6 步）<br/>• 继承 MooncakeStoreConnector<br/>• 按长度白名单决定回读或改走重算"]
+    Route["scripts/task_a_routing.py<br/>（可选选路插件草稿，尚未实机验收）<br/>• 继承 MooncakeStoreConnector<br/>• 预留给任务 A 第 6 步"]
     -. "TASK_A_ROUTING=1 时注入" .-> Run
 
     Diag["scripts/task_a_diagnostics.py<br/>（非计时 Worker 诊断插件）<br/>• 记录 CUDA Event 前向耗时与注意力路由<br/>• 保存全词表 logits 与 PUT/GET GPU KV 快照"]
@@ -102,7 +102,7 @@ flowchart TB
 1. **`task_a_run.sh` 里的进程安全收尾**：共享服务器上避免使用宽泛的 `pkill -f vllm` 误杀其他任务。脚本启动每个服务时都用 `setsid` 建独立会话并注入本轮唯一的随机环境变量 `TASK_A_SERVICE_RUN=<uuid>`；结束时的 `cleanup()` 通过 `/proc` 核对 UID、会话号与环境变量标签，再借助 Linux `pidfd_open` + `pidfd_send_signal` 精准终止属于本轮的进程，并写入 `status.json` 记录客户端与清理退出码。
 2. **`task_a_benchmark.py` 里的指标收敛等待**：vLLM 的外部 KV 异步保存（PUT）可能比 HTTP 响应返回稍晚几毫秒完成。客户端在发完 `build` 或 `pressure` 请求后，会循环轮询 `/metrics`，直到 `bytes_total/save_put/ok` 增量达到预期满块字节数才发下一条请求，彻底避免“前一条还没写完、后一条就来查”的竞态假 miss。
 3. **`task_a_diagnostics.py` 与主计时严格隔离**：由于抓显存字节与保存全词表 logits 会显著拖慢执行，诊断插件只在单独的 `TASK_A_DIAGNOSTICS=1` 非计时运行中启用，绝不混入主 TTFT 统计。
-4. **`task_a_routing.py` 的极简非侵入选路**：继承原有 `MooncakeStoreConnector`，重写 `get_num_new_matched_tokens()`：先调用父类查出真实的连续命中长度 `matched`，再检查请求参数 `kv_transfer_params.read_prefix_lengths` 是否允许该长度走回读；如果决定不读，就把父类刚准备好的 `load_specs` 弹出并返回 `(0, False)`，既不分配加载槽位也不发起 GET，让引擎平滑退回 GPU 重算。
+4. **`task_a_routing.py` 的极简非侵入选路（草稿，尚未实机验收）**：继承原有 `MooncakeStoreConnector`，重写 `get_num_new_matched_tokens()`：先调用父类查出真实的连续命中长度 `matched`，再检查请求参数 `kv_transfer_params.read_prefix_lengths` 是否允许该长度走回读；如果决定不读，就把父类刚准备好的 `load_specs` 弹出并返回 `(0, False)`，既不分配加载槽位也不发起 GET，让引擎平滑退回 GPU 重算。该插件当前预留给任务 A 第 6 步，尚未在 V100 上完成端到端实测。
 
 ---
 
@@ -170,6 +170,6 @@ python scripts/task_a_report.py \
    - **同机 TCP 搬运线性增长**：`GET` 从 `4.59 ms`（1.75 MiB）升至 `72.82 ms`（42 MiB），有效带宽约 `400 ~ 605 MB/s`。
    - **8-token 增量前向触发标量回退**：独立诊断显示，重算组走稠密 `prefill_no_prefix_dense_flash`（`64 / 256 / 1536` tokens 首步前向分别为 `29.7 / 30.4 / 76.3 ms`）；而回读组计算 8-token 短后缀时走 `prefill_smallq_decode_scalar` + `prefill_prefix_flash`（耗时 `52.3 / 52.9 / 66.7 ms`）。短前缀下增量前向反而更慢，1536 tokens 时也仅省约 `9.7 ms`，远抵消不了 `72.8 ms` 的搬运与异步加载框架开销。
 3. **无损传输验证与 `35/36` 数值边界**
-   - 36 对正式样本中 35 对输出完全一致；唯一差异样本（`256 / seed=53 / rep=1`）经诊断证实 **116 块（53.2 MiB）KV 搬运前后逐字节一致**，差异发生在传输之后——两条不同注意力内核在 FP16 下的微小累加差（全词表最大 logit 差 `0.0195`）恰好撞上几乎打平的 Top-2 候选（仅差 `0.0078`）。统一调度分块为 `max_num_batched_tokens=64` 后 6/6 输出全一致。
+   - 36 对正式样本中 35 对输出完全一致；唯一差异样本（`256 / seed=53 / rep=1`）经诊断证实 **116 块（50.75 MiB，即 53,215,232 bytes）KV 搬运前后逐字节一致**，差异发生在无损传输之后，与不同执行路径及查询形状下的 FP16 数值差异一致（全词表最大 logit 差 `0.0195`，未做逐算子隔离），恰好撞上几乎打平的 Top-2 候选（仅差 `0.0078`）。统一调度分块为 `max_num_batched_tokens=64` 后 6/6 输出全一致。
 
-这也直接指明了交叉点移动的物理规律：当模型规模更大（单位 KV 对应的 Prefill 计算量大幅增加）、上下文更长（如 4K–32K）或底层切换至高带宽互联（如 RDMA / PCIe 直接搬运并消除小-q 标量回退）时，省下的 Prefill 计算才更容易跨过搬运与同步门槛，使外部主存缓存进入净收益区间。
+从机制上看，模型规模更大（单位 KV 对应的 Prefill 计算量更高）、上下文更长（如 4K–32K）或底层切换至更高带宽互联（如 RDMA / PCIe 直接搬运并优化小-q 前缀内核），都可能是推动外部主存缓存进入净收益区间的关键因素，具体交叉点位置仍待在对应条件下实测验证。

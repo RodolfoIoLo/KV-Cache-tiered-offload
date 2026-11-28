@@ -28,4 +28,6 @@
 | [task_a_report.py](task_a_report.py) | **配对校验、统计汇总与绘图脚本**。核验成对 `recompute` / `store` 目录的配置、`prompt_digest` 与 `serve.log` DRAM 层日志；排除 warmup，计算中位数、IQR、配对差值、GET/Lookup 耗时与服务端残差，输出 `samples.csv`、`summary.csv`、`checks.json` 及 `ttft.png`。 | `python scripts/task_a_report.py --pair <compute_dir> <read_dir> --out <out_dir> --plot` |
 | [task_a_diagnostics.py](task_a_diagnostics.py) | **非计时 Worker 诊断插件**（通过 `--worker-extension-cls` 注入）。Hook 模型 `forward`/`compute_logits`、`flash_v100` 路由统计与 Mooncake 收发线程：记录 CUDA Event 前向耗时与注意力路由、保存全词表 logits、并在 `before_put`/`after_get` 用 `cudaMemcpy` 抓取 GPU 显存块原始字节。 | 设置 `TASK_A_DIAGNOSTICS=1` 后由 `task_a_run.sh` 自动注入（仅用于独立诊断，不计入主计时） |
 | [task_a_check_diagnostics.py](task_a_check_diagnostics.py) | **诊断快照离线核对脚本**。逐字节比对 `before_put` 与 `after_get` 的 KV 快照，计算 `read` vs `recompute` 的全词表 logits 误差、Top-3 候选及首步前向耗时和路由，生成 `diagnostics.json`。 | `python scripts/task_a_check_diagnostics.py --read <diag_read> --compute <diag_compute> --output diagnostics.json` |
-| [task_a_routing.py](task_a_routing.py) | **可选长度选路连接器（任务 A 第 6 步预留）**。继承 `MooncakeStoreConnector`，在 Master 查到真实连续命中长度后，按白名单决定走 DRAM 回读还是退回 GPU 重算。 | 设置 `TASK_A_ROUTING=1` 并传入 `--read-prefix-lengths` 启用 |
+| [task_a_routing.py](task_a_routing.py) | **可选长度选路连接器（草稿，尚未实机验收）**。预留给任务 A 第 6 步，继承 `MooncakeStoreConnector` 按长度白名单决定回读或改走重算。 | 尚未完成 V100 端到端实测；正式验证时通过 `TASK_A_ROUTING=1` 注入 |
+
+> 从环境变量、模型路径到四组扫描与报告生成的完整端到端复现示例，统一见 [项目说明 · 任务 A 完整复现示例](../docs/00-项目说明.md#2-任务-a-实机基准完整复现示例)。重新运行 `task_a_report.py` 依赖原始 `serve.log`；仅重绘公开曲线可直接读取 [summary.csv](../results/week2-3/task-a/summary.csv)。
